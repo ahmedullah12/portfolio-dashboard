@@ -6,31 +6,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useEditBlogMutation } from "@/redux/features/blogs/blogsApi";
 import { ChangeEvent, useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import MyForm from "../form/MyForm";
 import MyInput from "../form/MyInput";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import MyTextEditor from "../form/MyTextEditor";
 import { Label } from "../ui/label";
-import { MySelect } from "../form/MySelect";
-import toast from "react-hot-toast";
-import { useEditSkillMutation } from "@/redux/features/skills/skillsApi";
-import { ISkill } from "@/types/global";
+import { IBlog } from "@/types/global";
 
-interface EditSkillModalProps {
-  skillData: ISkill;
+interface EditBlogModalProps {
+  blogData: IBlog;
 }
 
-const titleOptions = [
-  { value: "Frontend", label: "Frontend" },
-  { value: "Backend", label: "Backend" },
-  { value: "Others", label: "Others" },
-];
-
-const EditSkillModal = ({skillData}: EditSkillModalProps) => {
+const EditBlogModal = ({ blogData }: EditBlogModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const [editSkill, { isLoading }] = useEditSkillMutation();
+  const [editBlog, { isLoading }] = useEditBlogMutation();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -45,7 +39,10 @@ const EditSkillModal = ({skillData}: EditSkillModalProps) => {
     formData.append("data", JSON.stringify(data));
 
     try {
-      const res = await editSkill({id: skillData._id, payload: formData}).unwrap();
+      const res = await editBlog({
+        id: blogData._id,
+        payload: formData,
+      }).unwrap();
       if (res.success === true) {
         toast.success(res.message);
         setIsOpen(false);
@@ -64,20 +61,21 @@ const EditSkillModal = ({skillData}: EditSkillModalProps) => {
       <DialogContent className="min-h-[300px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-primary">
-            Edit Skill
+            Edit Blog
           </DialogTitle>
         </DialogHeader>
 
-        <MyForm onSubmit={handleSubmit} defaultValues={skillData}>
+        <MyForm onSubmit={handleSubmit} defaultValues={blogData}>
           <div className="space-y-4">
             <MyInput
-              width="max-w-[400px]"
+              width="w-full"
               type="text"
-              name="name"
-              label="Skill Name"
+              name="title"
+              label="Blog Title"
+              required={true}
             />
 
-            <div className="max-w-[400px]">
+            <div className="w-full">
               <Label className="text-primary text-sm font-semibold">
                 Image
               </Label>
@@ -96,12 +94,9 @@ const EditSkillModal = ({skillData}: EditSkillModalProps) => {
               />
             </div>
 
-            <MySelect
-              label="Title"
-              name="title"
-              className="max-w-[400px]"
-              options={titleOptions}
-            />
+            <div>
+              <MyTextEditor name="text" label="Add Texts" required={true} />
+            </div>
           </div>
 
           <div className="my-4">
@@ -119,4 +114,4 @@ const EditSkillModal = ({skillData}: EditSkillModalProps) => {
   );
 };
 
-export default EditSkillModal;
+export default EditBlogModal;

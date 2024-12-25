@@ -92,8 +92,8 @@ const Skills = () => {
             isOpen={isDeleteModalOpen}
             onOpenChange={setIsDeleteModalOpen}
             onDelete={handleDeleteSkill}
-            title="Delete User"
-            description="Are you sure you want to delete this user?"
+            title="Delete Skill"
+            description="Are you sure you want to delete this Skill?"
           />
         </Table>
       )}

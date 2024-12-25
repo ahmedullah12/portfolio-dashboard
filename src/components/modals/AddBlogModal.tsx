@@ -28,7 +28,6 @@ const AddBlogModal = () => {
   };
 
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
-
     const formData = new FormData();
 
     if (selectedImage) formData.append("image", selectedImage);
@@ -88,11 +87,7 @@ const AddBlogModal = () => {
             </div>
 
             <div>
-            <MyTextEditor
-              name="text"
-              label="Add Texts"
-              required={true}
-            />
+              <MyTextEditor name="text" label="Add Texts" required={true} />
             </div>
           </div>
 

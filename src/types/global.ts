@@ -3,4 +3,11 @@ export interface ISkill {
     name: string;
     image: string;
     title: string;
+};
+
+export interface IBlog {
+    _id: string;
+    title: string;
+    blogImage: string;
+    text: string;
 }
