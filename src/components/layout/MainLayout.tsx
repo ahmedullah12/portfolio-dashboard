@@ -1,7 +1,10 @@
 import { LogOut, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
+import { sidebarOptions } from "@/constants/sidebarOptions";
+
+
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
@@ -80,7 +83,19 @@ const MainLayout = () => {
           </div>
           <div className="px-4 flex-grow">
             {
-              
+              sidebarOptions.map((option) => (
+                <Link
+                  className={`block px-4 py-2 rounded-md ${
+                    location.pathname === `${option.route}`
+                      ? "bg-secondary text-white"
+                      : ""
+                  }`}
+                  key={option.title}
+                  to={`/dashboard/vendor/${option.route}`}
+                >
+                  {option.title}
+                </Link>
+              ))
             }
           </div>
         </div>
