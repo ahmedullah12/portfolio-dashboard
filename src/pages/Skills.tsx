@@ -1,5 +1,6 @@
 import AddSkillModal from "@/components/modals/AddSkillModal";
 import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal";
+import EditSkillModal from "@/components/modals/EditSkillModal";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -74,7 +75,7 @@ const Skills = () => {
 
                 <TableCell>{skill.title}</TableCell>
                 <TableCell className="md:space-x-4">
-                  <Button size={"sm"}>Edit</Button>
+                  <EditSkillModal skillData={skill} />
                   <Button
                     onClick={() => handleOpenDeleteModal(skill)}
                     size={"sm"}

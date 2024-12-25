@@ -13,7 +13,12 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { Label } from "../ui/label";
 import { MySelect } from "../form/MySelect";
 import toast from "react-hot-toast";
-import { useAddSkillMutation } from "@/redux/features/skills/skillsApi";
+import { useEditSkillMutation } from "@/redux/features/skills/skillsApi";
+import { ISkill } from "@/types/global";
+
+interface EditSkillModalProps {
+  skillData: ISkill;
+}
 
 const titleOptions = [
   { value: "Frontend", label: "Frontend" },
@@ -21,11 +26,11 @@ const titleOptions = [
   { value: "Others", label: "Others" },
 ];
 
-const AddSkillModal = () => {
+const EditSkillModal = ({skillData}: EditSkillModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const [addSkill, { isLoading }] = useAddSkillMutation();
+  const [editSkill, { isLoading }] = useEditSkillMutation();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -34,17 +39,15 @@ const AddSkillModal = () => {
   };
 
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (!selectedImage) return toast.error("Please select an image");
-
     const formData = new FormData();
 
     if (selectedImage) formData.append("image", selectedImage);
     formData.append("data", JSON.stringify(data));
 
     try {
-      const res = await addSkill(formData).unwrap();
+      const res = await editSkill({id: skillData._id, payload: formData}).unwrap();
       if (res.success === true) {
-        toast.success("Skill added successfully");
+        toast.success(res.message);
         setIsOpen(false);
       }
     } catch (err: any) {
@@ -56,16 +59,16 @@ const AddSkillModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">Add Skill</Button>
+        <Button size="sm">Edit</Button>
       </DialogTrigger>
       <DialogContent className="min-h-[300px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-primary">
-            Add Skill
+            Edit Skill
           </DialogTitle>
         </DialogHeader>
 
-        <MyForm onSubmit={handleSubmit}>
+        <MyForm onSubmit={handleSubmit} defaultValues={skillData}>
           <div className="space-y-4">
             <MyInput
               width="max-w-[400px]"
@@ -116,4 +119,4 @@ const AddSkillModal = () => {
   );
 };
 
-export default AddSkillModal;
+export default EditSkillModal;
