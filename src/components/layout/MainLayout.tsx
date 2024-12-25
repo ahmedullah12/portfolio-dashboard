@@ -31,6 +31,7 @@ const MainLayout = () => {
     setShowSidebar(false);
   }, [location]);
 
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Mobile Navbar */}
@@ -91,11 +92,12 @@ const MainLayout = () => {
                       : ""
                   }`}
                   key={option.title}
-                  to={`/dashboard/vendor/${option.route}`}
+                  to={`${option.route}`}
                 >
                   {option.title}
                 </Link>
               ))
+              
             }
           </div>
         </div>

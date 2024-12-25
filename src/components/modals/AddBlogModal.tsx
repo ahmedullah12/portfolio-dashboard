@@ -6,26 +6,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAddBlogMutation } from "@/redux/features/blogs/blogsApi";
 import { ChangeEvent, useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import MyForm from "../form/MyForm";
 import MyInput from "../form/MyInput";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import MyTextEditor from "../form/MyTextEditor";
 import { Label } from "../ui/label";
-import { MySelect } from "../form/MySelect";
-import toast from "react-hot-toast";
-import { useAddSkillMutation } from "@/redux/features/skills/skillsApi";
 
-const titleOptions = [
-  { value: "Frontend", label: "Frontend" },
-  { value: "Backend", label: "Backend" },
-  { value: "Others", label: "Others" },
-];
-
-const AddSkillModal = () => {
+const AddBlogModal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-  const [addSkill, { isLoading }] = useAddSkillMutation();
+  const [addBlog, { isLoading }] = useAddBlogMutation();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -34,7 +28,6 @@ const AddSkillModal = () => {
   };
 
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (!selectedImage) return toast.error("Please select an image");
 
     const formData = new FormData();
 
@@ -42,7 +35,7 @@ const AddSkillModal = () => {
     formData.append("data", JSON.stringify(data));
 
     try {
-      const res = await addSkill(formData).unwrap();
+      const res = await addBlog(formData).unwrap();
       if (res.success === true) {
         toast.success(res.message);
         setIsOpen(false);
@@ -56,25 +49,26 @@ const AddSkillModal = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">Add Skill</Button>
+        <Button size="sm">Add Blog</Button>
       </DialogTrigger>
       <DialogContent className="min-h-[300px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-primary">
-            Add Skill
+            Add Blog
           </DialogTitle>
         </DialogHeader>
 
         <MyForm onSubmit={handleSubmit}>
           <div className="space-y-4">
             <MyInput
-              width="max-w-[400px]"
+              width="w-full"
               type="text"
-              name="name"
-              label="Skill Name"
+              name="title"
+              label="Blog Title"
+              required={true}
             />
 
-            <div className="max-w-[400px]">
+            <div className="w-full">
               <Label className="text-primary text-sm font-semibold">
                 Image
               </Label>
@@ -93,12 +87,13 @@ const AddSkillModal = () => {
               />
             </div>
 
-            <MySelect
-              label="Title"
-              name="title"
-              className="max-w-[400px]"
-              options={titleOptions}
+            <div>
+            <MyTextEditor
+              name="text"
+              label="Add Texts"
+              required={true}
             />
+            </div>
           </div>
 
           <div className="my-4">
@@ -116,4 +111,4 @@ const AddSkillModal = () => {
   );
 };
 
-export default AddSkillModal;
+export default AddBlogModal;

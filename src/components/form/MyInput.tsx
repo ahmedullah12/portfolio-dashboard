@@ -8,12 +8,22 @@ type TInputProps = {
   name: string;
   label?: string;
   disabled?: boolean;
+  required?: boolean;
 };
 
-const MyInput = ({ width, type, name, label, disabled }: TInputProps) => {
+const MyInput = ({
+  width,
+  type,
+  name,
+  label,
+  disabled,
+  required,
+}: TInputProps) => {
   return (
     <div>
-      <Label className="text-primary">{label}</Label>
+      <Label className="text-primary">
+        {label} <span className="text-black">{required && "*"}</span>
+      </Label>
       <Controller
         name={name}
         rules={{ required: `${label} is required` }}
