@@ -1,4 +1,5 @@
 import AddSkillModal from "@/components/modals/AddSkillModal";
+import DeleteConfirmationModal from "@/components/modals/DeleteConfirmationModal";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -8,12 +9,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetSkillsQuery } from "@/redux/features/skills/skillsApi";
+import {
+  useDeleteSkillMutation,
+  useGetSkillsQuery,
+} from "@/redux/features/skills/skillsApi";
 import { ISkill } from "@/types/global";
+import { useState } from "react";
 
 const Skills = () => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedSkill, setSelectedSkill] = useState<ISkill | null>(null);
+
   const { data: skills, isLoading } = useGetSkillsQuery(undefined);
-  console.log(skills);
+
+  const [deleteSkill] = useDeleteSkillMutation();
+
+  const handleOpenDeleteModal = (skill: ISkill) => {
+    setSelectedSkill(skill);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteSkill = async () => {
+    if (selectedSkill) {
+      return deleteSkill(selectedSkill._id).unwrap();
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -42,7 +62,7 @@ const Skills = () => {
           </TableHeader>
           <TableBody>
             {skills?.data?.map((skill: ISkill) => (
-              <TableRow key={skill.id}>
+              <TableRow key={skill._id}>
                 <TableCell>
                   <img
                     src={skill.image}
@@ -55,13 +75,25 @@ const Skills = () => {
                 <TableCell>{skill.title}</TableCell>
                 <TableCell className="md:space-x-4">
                   <Button size={"sm"}>Edit</Button>
-                  <Button size={"sm"} variant={"destructive"}>
+                  <Button
+                    onClick={() => handleOpenDeleteModal(skill)}
+                    size={"sm"}
+                    variant={"destructive"}
+                  >
                     Delete
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
+
+          <DeleteConfirmationModal
+            isOpen={isDeleteModalOpen}
+            onOpenChange={setIsDeleteModalOpen}
+            onDelete={handleDeleteSkill}
+            title="Delete User"
+            description="Are you sure you want to delete this user?"
+          />
         </Table>
       )}
     </div>
