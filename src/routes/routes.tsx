@@ -5,6 +5,8 @@ import Blogs from "@/pages/Blogs";
 import Projects from "@/pages/Projects";
 import AddProject from "@/pages/AddProject";
 import EditProject from "@/pages/EditProject";
+import Login from "@/pages/Login";
+import ProtectedRoute from "@/components/layout/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -13,25 +15,49 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Skills />,
+        element: (
+          <ProtectedRoute>
+            <Skills />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "blogs",
-        element: <Blogs />,
+        element: (
+          <ProtectedRoute>
+            <Blogs />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "projects",
-        element: <Projects />,
+        element: (
+          <ProtectedRoute>
+            <Projects />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "add-project",
-        element: <AddProject />,
+        element: (
+          <ProtectedRoute>
+            <AddProject />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "edit-project/:id",
-        element: <EditProject />,
+        element: (
+          <ProtectedRoute>
+            <EditProject />
+          </ProtectedRoute>
+        ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

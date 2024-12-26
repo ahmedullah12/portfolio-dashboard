@@ -1,15 +1,23 @@
-import { LogOut, Menu, X } from "lucide-react";
+import { LogOut, Menu, User, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import { sidebarOptions } from "@/constants/sidebarOptions";
-
-
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useCurrentUser } from "@/redux/features/auth/authApi";
+import { logOut } from "@/redux/features/auth/authSlice";
 
 const MainLayout = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  const user = useAppSelector(useCurrentUser);
+  const dispatch = useAppDispatch();
+
+  const handleLogOut = () => {
+    dispatch(logOut());
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,7 +38,6 @@ const MainLayout = () => {
   useEffect(() => {
     setShowSidebar(false);
   }, [location]);
-
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -83,26 +90,30 @@ const MainLayout = () => {
             </p>
           </div>
           <div className="px-4 flex-grow">
-            {
-              sidebarOptions.map((option) => (
-                <Link
-                  className={`block px-4 py-2 rounded-md ${
-                    location.pathname === `${option.route}`
-                      ? "bg-secondary text-white"
-                      : ""
-                  }`}
-                  key={option.title}
-                  to={`${option.route}`}
-                >
-                  {option.title}
-                </Link>
-              ))
-              
-            }
+            {sidebarOptions.map((option) => (
+              <Link
+                className={`block px-4 py-2 rounded-md ${
+                  location.pathname === `${option.route}`
+                    ? "bg-secondary text-white"
+                    : ""
+                }`}
+                key={option.title}
+                to={`${option.route}`}
+              >
+                {option.title}
+              </Link>
+            ))}
           </div>
         </div>
         <div className="p-4">
-          <Button className="flex items-center justify-center w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200">
+          <div className="flex items-center gap-4 mb-4">
+            <p className="size-10 flex items-center justify-center bg-primary rounded-full"><User color="white"/></p>
+            <div>
+              <p>{user?.name}</p>
+              <p>{user?.email}</p>
+            </div>
+          </div>
+          <Button onClick={handleLogOut} className="flex items-center justify-center w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200">
             <LogOut className="mr-2" size={20} />
             LogOut
           </Button>

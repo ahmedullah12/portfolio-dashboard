@@ -11,8 +11,4 @@ export const sidebarOptions = [
       title: "Blogs",
       route: "/blogs",
     },
-    {
-      title: "Experience",
-      route: "/experience",
-    },
   ];
