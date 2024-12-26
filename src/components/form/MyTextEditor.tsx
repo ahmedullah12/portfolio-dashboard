@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Label } from "../ui/label";
 
 interface IProps {
   name: string;
@@ -16,7 +17,7 @@ export default function MyTextEditor({ name, label, required }: IProps) {
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <Label className="text-primary">{label}</Label>
       <Controller
         name={name}
         control={control}
@@ -27,7 +28,7 @@ export default function MyTextEditor({ name, label, required }: IProps) {
           <ReactQuill
             value={field.value || ""}
             onChange={field.onChange}
-            className={`my-2 ${errors[name] ? "border-red-500" : ""}`}
+            className={`h-[100px] my-2 ${errors[name] ? "border-red-500" : ""}`}
           />
         )}
       />

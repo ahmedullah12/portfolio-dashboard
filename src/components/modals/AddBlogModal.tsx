@@ -91,7 +91,7 @@ const AddBlogModal = () => {
             </div>
           </div>
 
-          <div className="my-4">
+          <div className="mt-20 mb-4">
             <button
               className="px-4 py-1 bg-primary text-white rounded-md font-semibold"
               type="submit"

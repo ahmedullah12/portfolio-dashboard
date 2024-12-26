@@ -35,7 +35,7 @@ const Blogs = () => {
 
   if(isLoading) return <div>Loading...</div>
   return (
-    <div>
+    <div className="pt-2 px-2 md:pt-6 md:px-6">
       <div className="flex justify-between items-center">
         <h1 className="text-xl md:text-2xl font-semibold">All Blogs</h1>
         <AddBlogModal />

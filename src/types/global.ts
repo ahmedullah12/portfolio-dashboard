@@ -11,3 +11,14 @@ export interface IBlog {
     blogImage: string;
     text: string;
 }
+
+export interface IProject {
+    _id: string;
+    title: string;
+    date: string;
+    description: string;
+    image: string;
+    tags: string[];
+    github: string;
+    live: string;
+  }
