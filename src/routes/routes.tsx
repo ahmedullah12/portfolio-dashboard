@@ -4,6 +4,7 @@ import Skills from "../pages/Skills";
 import Blogs from "@/pages/Blogs";
 import Projects from "@/pages/Projects";
 import AddProject from "@/pages/AddProject";
+import EditProject from "@/pages/EditProject";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "add-project",
         element: <AddProject />,
+      },
+      {
+        path: "edit-project/:id",
+        element: <EditProject />,
       },
     ],
   },
