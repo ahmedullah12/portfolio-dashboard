@@ -7,6 +7,7 @@ import AddProject from "@/pages/AddProject";
 import EditProject from "@/pages/EditProject";
 import Login from "@/pages/Login";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
+import Experiences from "@/pages/Experiences";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <EditProject />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "experiences",
+        element: (
+          <ProtectedRoute>
+            <Experiences />
           </ProtectedRoute>
         ),
       },

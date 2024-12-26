@@ -6,6 +6,6 @@ export const baseApi = createApi({
     baseUrl: "https://portfolio-backend-fawn-ten.vercel.app/api",
     credentials: "include",
   }),
-  tagTypes: ["Skills", "Blogs", "Projects"],
+  tagTypes: ["Skills", "Blogs", "Projects", "Experiences"],
   endpoints: () => ({}),
 });
