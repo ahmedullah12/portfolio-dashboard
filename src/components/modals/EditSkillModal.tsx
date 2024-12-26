@@ -26,7 +26,7 @@ const titleOptions = [
   { value: "Others", label: "Others" },
 ];
 
-const EditSkillModal = ({skillData}: EditSkillModalProps) => {
+const EditSkillModal = ({ skillData }: EditSkillModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -45,9 +45,13 @@ const EditSkillModal = ({skillData}: EditSkillModalProps) => {
     formData.append("data", JSON.stringify(data));
 
     try {
-      const res = await editSkill({id: skillData._id, payload: formData}).unwrap();
+      const res = await editSkill({
+        id: skillData._id,
+        payload: formData,
+      }).unwrap();
       if (res.success === true) {
         toast.success(res.message);
+        setSelectedImage(null);
         setIsOpen(false);
       }
     } catch (err: any) {

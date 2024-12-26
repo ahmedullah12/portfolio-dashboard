@@ -37,6 +37,7 @@ const AddBlogModal = () => {
       const res = await addBlog(formData).unwrap();
       if (res.success === true) {
         toast.success(res.message);
+        setSelectedImage(null);
         setIsOpen(false);
       }
     } catch (err: any) {

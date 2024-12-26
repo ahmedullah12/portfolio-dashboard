@@ -45,6 +45,7 @@ const AddSkillModal = () => {
       const res = await addSkill(formData).unwrap();
       if (res.success === true) {
         toast.success(res.message);
+        setSelectedImage(null);
         setIsOpen(false);
       }
     } catch (err: any) {
