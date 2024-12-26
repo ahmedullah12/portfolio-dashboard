@@ -8,11 +8,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useGetExperiencesQuery } from "@/redux/features/experience/experienceApi";
-import {
-    useDeleteProjectMutation
-} from "@/redux/features/projects/projectsApi";
+import { useDeleteExperienceMutation, useGetExperiencesQuery } from "@/redux/features/experience/experienceApi";
 import { IExperience } from "@/types/global";
+import { format } from "date-fns";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,16 +19,16 @@ const Experiences = () => {
   const [selectedExperience, setSelectedExperience] = useState<IExperience | null>(null);
 
   const { data: experiences, isLoading } = useGetExperiencesQuery(undefined);
-  const [deleteProject] = useDeleteProjectMutation();
+  const [deleteExperience] = useDeleteExperienceMutation();
 
   const handleOpenDeleteModal = (experience: IExperience) => {
     setSelectedExperience(experience);
     setIsDeleteModalOpen(true);
   };
 
-  const handleDeleteProject = async () => {
+  const handleDeleteExperience = async () => {
     if (selectedExperience) {
-      return deleteProject(selectedExperience._id).unwrap();
+      return deleteExperience(selectedExperience._id).unwrap();
     }
   };
 
@@ -70,15 +68,14 @@ const Experiences = () => {
                 </TableCell>
                 <TableCell className="font-medium">{experience.designation}</TableCell>
                 <TableCell className="font-medium">
-                  {experience.startDate}
+                  {format(experience.startDate, "PPP")}
                 </TableCell>
                 <TableCell className="font-medium">
-                  {experience.endDate}
+                  {experience.endDate && format(experience.endDate, "PPP")}
                 </TableCell>
                 <TableCell className="md:space-x-4">
-                  <Link to={`/edit-experience/${experience._id}`}>
+                  
                     <Button size={"sm"}>Edit</Button>
-                  </Link>
                   <Button
                     onClick={() => handleOpenDeleteModal(experience)}
                     size={"sm"}
@@ -94,7 +91,7 @@ const Experiences = () => {
           <DeleteConfirmationModal
             isOpen={isDeleteModalOpen}
             onOpenChange={setIsDeleteModalOpen}
-            onDelete={handleDeleteProject}
+            onDelete={handleDeleteExperience}
             title="Delete Project"
             description="Are you sure you want to delete this Project?"
           />
